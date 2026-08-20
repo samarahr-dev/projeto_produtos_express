@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { api } from '../api';
+import { CATEGORIAS } from '../categorias';
 
 const formularioVazio = {
   nome: '',
@@ -52,12 +53,19 @@ function ProdutoForm({ onCriado }) {
         </label>
         <label>
           Categoria
-          <input
+          <select
             name="categoria"
             value={formulario.categoria}
             onChange={atualizarCampo}
             required
-          />
+          >
+            <option value="">Selecione</option>
+            {CATEGORIAS.map((categoria) => (
+              <option key={categoria} value={categoria}>
+                {categoria}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Preço

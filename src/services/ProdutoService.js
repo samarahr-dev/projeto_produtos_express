@@ -29,12 +29,13 @@ function criarProduto(dados) {
 function atualizarProduto(id, dados) {
   obterProduto(id); // garante que existe (senão lança 404)
 
-  const { nome, categoria, preco } = dados;
-  if (!nome || !categoria || typeof preco !== 'number') {
+  if (!validarProduto(dados)) {
     const erro = new Error('dados inválidos');
     erro.status = 400;
     throw erro;
   }
+
+  const { nome, categoria, preco } = dados;
 
   return repository.atualizar(id, { nome, categoria, preco });
 }

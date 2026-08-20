@@ -3,7 +3,7 @@ const { validarProduto } = require('./produto-utils');
 test('deve validar um produto correto', () => {
   const produto = {
     nome: 'Ração',
-    categoria: 'Alimentação',
+    categoria: 'alimentação',
     preco: 100
   };
 
@@ -13,7 +13,7 @@ test('deve validar um produto correto', () => {
 test('deve rejeitar produto sem nome', () => {
   const produto = {
     nome: '',
-    categoria: 'Alimentação',
+    categoria: 'alimentação',
     preco: 100
   };
 
@@ -23,8 +23,18 @@ test('deve rejeitar produto sem nome', () => {
 test('deve rejeitar preço inválido', () => {
   const produto = {
     nome: 'Ração',
-    categoria: 'Alimentação',
+    categoria: 'alimentação',
     preco: -10
+  };
+
+  expect(validarProduto(produto)).toBe(false);
+});
+
+test('deve rejeitar categoria fora da lista', () => {
+  const produto = {
+    nome: 'Ração',
+    categoria: 'eletrônicos',
+    preco: 100
   };
 
   expect(validarProduto(produto)).toBe(false);

@@ -1,10 +1,18 @@
+const CATEGORIAS = [
+  'alimentação',
+  'acessório',
+  'higiene',
+  'saúde e farmácia',
+  'brinquedos',
+];
+
 function validarProduto({ nome, categoria, preco }) {
   return Boolean(
     nome &&
-    categoria &&
+    CATEGORIAS.includes(categoria) &&
     typeof preco === 'number' &&
     preco > 0
   );
 }
 
-module.exports = { validarProduto };
+module.exports = { CATEGORIAS, validarProduto };

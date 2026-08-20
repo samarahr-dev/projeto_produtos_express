@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { api } from '../api';
+import ProdutoItem from './ProdutoItem';
 
 function ProdutoList({ produtos, onAlterado }) {
   const [filtro, setFiltro] = useState('');
@@ -48,17 +49,11 @@ function ProdutoList({ produtos, onAlterado }) {
         </thead>
         <tbody>
           {produtos.map((produto) => (
-            <tr key={produto.id}>
-              <td>{produto.id}</td>
-              <td>{produto.nome}</td>
-              <td>{produto.categoria}</td>
-              <td>{Number(produto.preco).toFixed(2)}</td>
-              <td>
-                <button type="button" onClick={() => excluir(produto.id)}>
-                  Excluir
-                </button>
-              </td>
-            </tr>
+            <ProdutoItem
+              key={produto.id}
+              produto={produto}
+              onExcluir={excluir}
+            />
           ))}
         </tbody>
       </table>
