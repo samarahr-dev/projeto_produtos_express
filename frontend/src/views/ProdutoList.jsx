@@ -1,23 +1,21 @@
 import { useState } from 'react';
 
-import { api } from '../api';
 import ProdutoItem from './ProdutoItem';
 
-function ProdutoList({ produtos, onAlterado }) {
+function ProdutoList({ produtos, onBuscar, onRemover }) {
   const [filtro, setFiltro] = useState('');
   const [erro, setErro] = useState('');
 
-  async function buscar(evento) {
+  function buscar(evento) {
     evento.preventDefault();
     setErro('');
-    onAlterado(filtro);
+    onBuscar(filtro);
   }
 
   async function excluir(id) {
     setErro('');
     try {
-      await api(`/produtos/${id}`, { method: 'DELETE' });
-      onAlterado(filtro);
+      await onRemover(id, filtro);
     } catch (e) {
       setErro(e.message);
     }

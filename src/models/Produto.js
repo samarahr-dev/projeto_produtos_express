@@ -6,7 +6,7 @@ const CATEGORIAS = [
   'brinquedos',
 ];
 
-function validarProduto({ nome, categoria, preco }) {
+function validar({ nome, categoria, preco }) {
   return Boolean(
     nome &&
     CATEGORIAS.includes(categoria) &&
@@ -15,4 +15,4 @@ function validarProduto({ nome, categoria, preco }) {
   );
 }
 
-module.exports = { CATEGORIAS, validarProduto };
+module.exports = { CATEGORIAS, validar };

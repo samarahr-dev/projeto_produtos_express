@@ -1,7 +1,37 @@
 .pagina {
-  max-width: 720px;
+  max-width: 920px;
   margin: 0 auto;
   padding: 24px;
+}
+
+.pagina h1 {
+  text-align: center;
+}
+
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.galeria {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.galeria img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+
+.conteudo {
+  flex: 1;
+  min-width: 0;
 }
 
 section {

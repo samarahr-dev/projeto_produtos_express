@@ -1,5 +1,6 @@
 const repository = require('../repositories/ProdutoRepository');
-const { validarProduto } = require('../models/produto-utils');
+const Produto = require('../models/Produto');
+const HttpError = require('../utils/HttpError');
 
 function listarProdutos(filtroNome) {
   return repository.listar(filtroNome);
@@ -8,18 +9,14 @@ function listarProdutos(filtroNome) {
 function obterProduto(id) {
   const produto = repository.buscarPorId(id);
   if (!produto) {
-    const erro = new Error('não encontrado');
-    erro.status = 404;
-    throw erro;
+    throw new HttpError(404, 'não encontrado');
   }
   return produto;
 }
 
 function criarProduto(dados) {
-  if (!validarProduto(dados)) {
-    const erro = new Error('Produto inválido');
-    erro.status = 400;
-    throw erro;
+  if (!Produto.validar(dados)) {
+    throw new HttpError(400, 'Produto inválido');
   }
 
   const { nome, categoria, preco } = dados;
@@ -27,21 +24,18 @@ function criarProduto(dados) {
 }
 
 function atualizarProduto(id, dados) {
-  obterProduto(id); // garante que existe (senão lança 404)
+  obterProduto(id);
 
-  if (!validarProduto(dados)) {
-    const erro = new Error('dados inválidos');
-    erro.status = 400;
-    throw erro;
+  if (!Produto.validar(dados)) {
+    throw new HttpError(400, 'dados inválidos');
   }
 
   const { nome, categoria, preco } = dados;
-
   return repository.atualizar(id, { nome, categoria, preco });
 }
 
 function excluirProduto(id) {
-  obterProduto(id); // garante que existe (senão lança 404)
+  obterProduto(id);
   repository.excluir(id);
 }
 

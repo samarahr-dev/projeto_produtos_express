@@ -5,3 +5,9 @@ export const CATEGORIAS = [
   'saúde e farmácia',
   'brinquedos',
 ];
+
+export const FORMULARIO_VAZIO = {
+  nome: '',
+  categoria: '',
+  preco: '',
+};

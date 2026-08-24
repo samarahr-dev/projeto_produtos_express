@@ -1,10 +1,6 @@
-// O Vite (porta 5173) e o Express (porta 3000) são origens diferentes.
-// Por isso o backend precisa de CORS e o fetch precisa de credentials: 'include'
-// para enviar o cookie de sessão.
 const API_URL = 'http://localhost:3000/api';
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
-export async function api(caminho, opcoes = {}) {
+export async function requisitar(caminho, opcoes = {}) {
   const { headers, ...resto } = opcoes;
 
   const resposta = await fetch(`${API_URL}${caminho}`, {
@@ -27,11 +23,4 @@ export async function api(caminho, opcoes = {}) {
   }
 
   return dados;
-}
-
-export function loginComToken() {
-  return api('/login', {
-    method: 'POST',
-    body: JSON.stringify({ access_token: ACCESS_TOKEN }),
-  });
 }
