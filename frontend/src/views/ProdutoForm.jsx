@@ -1,16 +1,9 @@
 import { useState } from 'react';
 
-import { api } from '../api';
-import { CATEGORIAS } from '../categorias';
+import { CATEGORIAS, FORMULARIO_VAZIO } from '../models/produto';
 
-const formularioVazio = {
-  nome: '',
-  categoria: '',
-  preco: '',
-};
-
-function ProdutoForm({ onCriado }) {
-  const [formulario, setFormulario] = useState(formularioVazio);
+function ProdutoForm({ onCadastrar }) {
+  const [formulario, setFormulario] = useState(FORMULARIO_VAZIO);
   const [erro, setErro] = useState('');
 
   function atualizarCampo(evento) {
@@ -23,16 +16,8 @@ function ProdutoForm({ onCriado }) {
     setErro('');
 
     try {
-      await api('/produtos', {
-        method: 'POST',
-        body: JSON.stringify({
-          nome: formulario.nome,
-          categoria: formulario.categoria,
-          preco: Number(formulario.preco),
-        }),
-      });
-      setFormulario(formularioVazio);
-      onCriado();
+      await onCadastrar(formulario);
+      setFormulario(FORMULARIO_VAZIO);
     } catch (e) {
       setErro(e.message);
     }

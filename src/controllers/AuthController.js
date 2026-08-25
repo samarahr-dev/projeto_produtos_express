@@ -1,15 +1,18 @@
-function login(req, res) {
-  const { access_token } = req.body;
+const AuthService = require('../services/AuthService');
+const HttpError = require('../utils/HttpError');
 
-  if (!access_token || access_token !== process.env.ACCESS_TOKEN) {
-    return res.status(401).json({ erro: 'access_token inválido' });
+function login(req, res, next) {
+  try {
+    AuthService.autenticar(req.body.access_token);
+
+    req.session.autenticado = true;
+    req.session.logadoEm = new Date().toISOString();
+    req.session.contaAcessos = 0;
+
+    res.status(200).json({ mensagem: 'sessão iniciada com sucesso' });
+  } catch (erro) {
+    next(erro);
   }
-
-  req.session.autenticado = true;
-  req.session.logadoEm = new Date().toISOString();
-  req.session.contaAcessos = 0;
-
-  res.status(200).json({ mensagem: 'sessão iniciada com sucesso' });
 }
 
 function perfil(req, res) {
@@ -19,10 +22,10 @@ function perfil(req, res) {
   });
 }
 
-function logout(req, res) {
+function logout(req, res, next) {
   req.session.destroy((err) => {
     if (err) {
-      return res.status(500).json({ erro: 'erro ao encerrar sessão' });
+      return next(new HttpError(500, 'erro ao encerrar sessão'));
     }
     res.clearCookie('connect.sid');
     res.status(200).json({ mensagem: 'sessão encerrada' });

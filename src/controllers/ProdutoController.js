@@ -1,65 +1,70 @@
 const service = require('../services/ProdutoService');
+const csvView = require('../views/produtoCsvView');
 
-function listar(req, res) {
-  req.session.contaAcessos += 1;
-  const { nome } = req.query;
-  res.status(200).json(service.listarProdutos(nome));
+function listar(req, res, next) {
+  try {
+    req.session.contaAcessos += 1;
+    const { nome } = req.query;
+    res.status(200).json(service.listarProdutos(nome));
+  } catch (erro) {
+    next(erro);
+  }
 }
 
-function buscar(req, res) {
+function buscar(req, res, next) {
   try {
     const produto = service.obterProduto(Number(req.params.id));
     res.status(200).json(produto);
   } catch (erro) {
-    res.status(erro.status || 500).json({ erro: erro.message });
+    next(erro);
   }
 }
 
-function criar(req, res) {
+function criar(req, res, next) {
   try {
     const produto = service.criarProduto(req.body);
-    res.status(201).json(produto); // 201 = criado com sucesso
+    res.status(201).json(produto);
   } catch (erro) {
-    res.status(erro.status || 500).json({ erro: erro.message });
+    next(erro);
   }
 }
 
-function atualizar(req, res) {
+function atualizar(req, res, next) {
   try {
     const produto = service.atualizarProduto(Number(req.params.id), req.body);
     res.status(200).json(produto);
   } catch (erro) {
-    res.status(erro.status || 500).json({ erro: erro.message });
+    next(erro);
   }
 }
 
-function excluir(req, res) {
+function excluir(req, res, next) {
   try {
     service.excluirProduto(Number(req.params.id));
-    res.status(204).send(); // 204 = sucesso, sem conteúdo de resposta
+    res.status(204).send();
   } catch (erro) {
-    res.status(erro.status || 500).json({ erro: erro.message });
+    next(erro);
   }
 }
 
-// GET /api/produtos/:id/csv — exporta 1 produto
-function exportarUmCsv(req, res) {
+function exportarUmCsv(req, res, next) {
   try {
     const produto = service.obterProduto(Number(req.params.id));
     res.set('Content-Type', 'text/csv');
-    res.send(`${produto.id},${produto.nome},${produto.preco}`);
+    res.send(csvView.umProduto(produto));
   } catch (erro) {
-    res.status(erro.status || 500).json({ erro: erro.message });
+    next(erro);
   }
 }
 
-// GET /api/produtos/csv — exporta todos os produtos
-function exportarTodosCsv(req, res) {
-  const produtos = service.listarProdutos();
-  const cabecalho = 'id,nome,preco';
-  const linhas = produtos.map((p) => `${p.id},${p.nome},${p.preco}`);
-  res.set('Content-Type', 'text/csv');
-  res.send([cabecalho, ...linhas].join('\n'));
+function exportarTodosCsv(req, res, next) {
+  try {
+    const produtos = service.listarProdutos();
+    res.set('Content-Type', 'text/csv');
+    res.send(csvView.lista(produtos));
+  } catch (erro) {
+    next(erro);
+  }
 }
 
 module.exports = {
