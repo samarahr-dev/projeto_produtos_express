@@ -1,0 +1,171 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 2 /Kids [6 0 R 8 0 R] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 2202 >>
+stream
+BT
+/F2 20 Tf
+1 0 0 1 54 800 Tm (Guia de testes da API de Produtos) Tj
+/F1 11 Tf
+1 0 0 1 54 773 Tm (Backend Node.js com Express, Jest e SQLite.) Tj
+/F1 8 Tf
+1 0 0 1 54 755 Tm () Tj
+/F2 14 Tf
+1 0 0 1 54 740 Tm (1. Como executar) Tj
+/F1 10 Tf
+1 0 0 1 54 719 Tm (npm test) Tj
+/F1 10 Tf
+1 0 0 1 54 702 Tm (npm test -- --runInBand) Tj
+/F1 10 Tf
+1 0 0 1 54 685 Tm (O primeiro comando executa todas as suites. O segundo executa uma suite por vez.) Tj
+/F1 6 Tf
+1 0 0 1 54 668 Tm () Tj
+/F2 14 Tf
+1 0 0 1 54 655 Tm (2. Organizacao e objetivo) Tj
+/F1 10 Tf
+1 0 0 1 54 634 Tm (- src/models/Produto.test.js: testa validar com dados reais, sem mocks.) Tj
+/F1 10 Tf
+1 0 0 1 54 617 Tm (- src/services/ProdutoService.test.js: testa regras de negocio isolando dependencias.) Tj
+/F1 10 Tf
+1 0 0 1 54 600 Tm (- src/controllers/ProdutoController.test.js: testa respostas HTTP e delegacao ao servico.) Tj
+/F1 10 Tf
+1 0 0 1 54 583 Tm (Um teste unitario exercita uma unidade pequena e substitui dependencias externas.) Tj
+/F1 6 Tf
+1 0 0 1 54 566 Tm () Tj
+/F2 14 Tf
+1 0 0 1 54 553 Tm (3. Testes do modelo) Tj
+/F1 10 Tf
+1 0 0 1 54 532 Tm (A funcao validar aceita produto com nome, categoria permitida e preco numerico maior que zero.) Tj
+/F1 10 Tf
+1 0 0 1 54 515 Tm (Casos: produto correto; nome vazio; preco negativo; categoria fora da lista.) Tj
+/F1 6 Tf
+1 0 0 1 54 498 Tm () Tj
+/F2 11 Tf
+1 0 0 1 54 485 Tm (Exemplo) Tj
+/F1 9 Tf
+1 0 0 1 54 467 Tm (test\('rejeita preco invalido', \(\) => {) Tj
+/F1 9 Tf
+1 0 0 1 54 451 Tm (  expect\(validar\({ nome: 'Racao', categoria: 'alimentacao', preco: -10 }\)\)) Tj
+/F1 9 Tf
+1 0 0 1 54 435 Tm (    .toBe\(false\);) Tj
+/F1 9 Tf
+1 0 0 1 54 419 Tm (}\);) Tj
+/F1 6 Tf
+1 0 0 1 54 403 Tm () Tj
+/F2 14 Tf
+1 0 0 1 54 390 Tm (4. Testes do servico) Tj
+/F1 10 Tf
+1 0 0 1 54 369 Tm (ProdutoService chama o repositorio, valida dados e lanca HttpError quando necessario.) Tj
+/F1 10 Tf
+1 0 0 1 54 352 Tm (O repositorio e o modelo sao mocks porque SQLite nao e responsabilidade dessa camada.) Tj
+/F1 10 Tf
+1 0 0 1 54 335 Tm (Casos: listagem com filtro, busca encontrada, 404, criacao valida/invalida,) Tj
+/F1 10 Tf
+1 0 0 1 54 318 Tm (atualizacao valida/inexistente e exclusao de produto existente.) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 2758 >>
+stream
+BT
+/F2 16 Tf
+1 0 0 1 54 800 Tm (Guia de testes da API de Produtos) Tj
+/F1 7 Tf
+1 0 0 1 54 777 Tm () Tj
+/F2 14 Tf
+1 0 0 1 54 763 Tm (5. Testes do controller) Tj
+/F1 10 Tf
+1 0 0 1 54 742 Tm (O controller recebe req e res simples. Nao e preciso iniciar o Express no teste unitario.) Tj
+/F1 10 Tf
+1 0 0 1 54 725 Tm (criarResposta cria mocks para status, json, send e set.) Tj
+/F1 10 Tf
+1 0 0 1 54 708 Tm (Casos: listagem incrementa a sessao e retorna 200; criacao retorna 201;) Tj
+/F1 10 Tf
+1 0 0 1 54 691 Tm (erros seguem para next\(erro\); exportacao define text/csv e envia o conteudo CSV.) Tj
+/F1 7 Tf
+1 0 0 1 54 674 Tm () Tj
+/F2 14 Tf
+1 0 0 1 54 660 Tm (6. Recursos do Jest usados) Tj
+/F1 10 Tf
+1 0 0 1 54 639 Tm (test\(nome, funcao\): declara um caso independente.) Tj
+/F1 10 Tf
+1 0 0 1 54 622 Tm (expect\(valor\): inicia uma verificacao.) Tj
+/F1 10 Tf
+1 0 0 1 54 605 Tm (toBe\(valor\): compara primitivos ou a mesma referencia.) Tj
+/F1 10 Tf
+1 0 0 1 54 588 Tm (toEqual\(valor\): compara conteudo de objetos e arrays.) Tj
+/F1 10 Tf
+1 0 0 1 54 571 Tm (toThrow\(texto ou classe\): confirma que uma funcao lanca erro.) Tj
+/F1 10 Tf
+1 0 0 1 54 554 Tm (jest.mock\(caminho, factory\): substitui modulo importado por uma versao controlada.) Tj
+/F1 10 Tf
+1 0 0 1 54 537 Tm (jest.fn\(\): cria funcao simulada e registra suas chamadas.) Tj
+/F1 10 Tf
+1 0 0 1 54 520 Tm (mockReturnValue\(valor\): define o retorno do mock.) Tj
+/F1 10 Tf
+1 0 0 1 54 503 Tm (mockImplementation\(funcao\): define comportamento, por exemplo lancar erro.) Tj
+/F1 10 Tf
+1 0 0 1 54 486 Tm (mockReturnThis\(\): permite res.status\(...\).json\(...\) no mock de resposta.) Tj
+/F1 10 Tf
+1 0 0 1 54 469 Tm (toHaveBeenCalledWith\(...\): confere argumentos de uma chamada.) Tj
+/F1 10 Tf
+1 0 0 1 54 452 Tm (not.toHaveBeenCalled\(\): confirma que uma chamada proibida nao ocorreu.) Tj
+/F1 10 Tf
+1 0 0 1 54 435 Tm (jest.clearAllMocks\(\): limpa o historico dos mocks antes de cada teste.) Tj
+/F1 7 Tf
+1 0 0 1 54 418 Tm () Tj
+/F2 14 Tf
+1 0 0 1 54 404 Tm (7. Fluxo para criar um novo teste) Tj
+/F1 10 Tf
+1 0 0 1 54 383 Tm (1. Escolha uma regra: exemplo, produto inexistente retorna 404.) Tj
+/F1 10 Tf
+1 0 0 1 54 366 Tm (2. Faca mock apenas das dependencias da camada.) Tj
+/F1 10 Tf
+1 0 0 1 54 349 Tm (3. Prepare entradas e retornos dos mocks.) Tj
+/F1 10 Tf
+1 0 0 1 54 332 Tm (4. Execute a funcao e verifique retorno, status HTTP ou erro.) Tj
+/F1 10 Tf
+1 0 0 1 54 315 Tm (5. Verifique argumentos e chamadas que nao devem ocorrer.) Tj
+/F1 7 Tf
+1 0 0 1 54 298 Tm () Tj
+/F1 10 Tf
+1 0 0 1 54 284 Tm (Use Supertest para testes de integracao de rota, middleware, sessao e Express.) Tj
+/F1 10 Tf
+1 0 0 1 54 267 Tm (Os testes atuais sao unitarios: rapidos, isolados e chamam controller/service diretamente.) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000191 00000 n 
+0000000266 00000 n 
+0000002520 00000 n 
+0000002656 00000 n 
+0000005466 00000 n 
+trailer
+<< /Size 9 /Root 1 0 R >>
+startxref
+5602
+%%EOF
