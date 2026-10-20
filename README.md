@@ -4,6 +4,7 @@ API Express + frontend React para cadastro de produtos de pet shop. O código se
 
 - Backend: `http://localhost:3000`
 - Frontend (Vite): `http://localhost:5173`
+- Documentação Swagger: `http://localhost:3000/api/docs`
 
 ## Como executar
 
@@ -20,6 +21,7 @@ No frontend, copie `frontend/.env.example` para `frontend/.env` e use o mesmo to
 
 ```env
 VITE_ACCESS_TOKEN=seu_token
+VITE_API_URL=http://localhost:3000/api
 ```
 
 Instale e suba as duas partes:
@@ -63,7 +65,7 @@ usuário → rota/view → controller → service/model → repository (banco)
 ```
 src/
   app.js                 # monta o Express (CORS, sessão, rotas, erros)
-  config/                # banco SQLite e sessão
+  config/                # banco SQLite, sessão e Swagger
   routes/                # URL + método HTTP → controller
   controllers/           # interpreta o request e escolhe a resposta
   views/                 # formatação CSV
@@ -148,4 +150,12 @@ Fluxo ao clicar em **Salvar**:
 | `GET` | `/api/produtos/csv` | Exporta todos em CSV |
 | `GET` | `/api/status` | Health check |
 
+A documentação interativa fica em `/api/docs` (gerada com `swagger-jsdoc` a partir dos comentários em `src/routes/`). O JSON OpenAPI está em `/api/docs.json`.
+
 A pasta `public/` ainda tem uma página HTML estática antiga da API. A interface da disciplina é o app em `frontend/`.
+
+---
+
+## CI (GitHub Actions)
+
+O workflow em `.github/workflows/ci.yml` instala as dependências e roda `npm test` em todo push na `main` e em pull requests. Não há deploy automático.

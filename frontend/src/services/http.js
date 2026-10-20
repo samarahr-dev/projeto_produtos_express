@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 export async function requisitar(caminho, opcoes = {}) {
   const { headers, ...resto } = opcoes;

@@ -39,7 +39,7 @@ test('informa 404 quando o produto nao existe', () => {
   repository.buscarPorId.mockReturnValue(undefined);
 
   expect(() => service.obterProduto(99)).toThrow(HttpError);
-  expect(() => service.obterProduto(99)).toThrow('não encontrado');
+  expect(() => service.obterProduto(99)).toThrow('Produto não encontrado');
 });
 
 test('cria produto valido somente com os campos permitidos', () => {
@@ -71,8 +71,16 @@ test('atualiza produto existente e valido', () => {
 test('nao atualiza produto inexistente ou com dados invalidos', () => {
   repository.buscarPorId.mockReturnValue(undefined);
 
-  expect(() => service.atualizarProduto(1, dados)).toThrow('não encontrado');
+  expect(() => service.atualizarProduto(1, dados)).toThrow('Produto não encontrado');
   expect(Produto.validar).not.toHaveBeenCalled();
+  expect(repository.atualizar).not.toHaveBeenCalled();
+});
+
+test('recusa atualizacao com dados invalidos', () => {
+  repository.buscarPorId.mockReturnValue({ id: 1, ...dados });
+  Produto.validar.mockReturnValue(false);
+
+  expect(() => service.atualizarProduto(1, dados)).toThrow('dados inválidos');
   expect(repository.atualizar).not.toHaveBeenCalled();
 });
 
