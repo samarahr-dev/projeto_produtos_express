@@ -156,45 +156,6 @@ A pasta `public/` ainda tem uma página HTML estática antiga da API. A interfac
 
 ---
 
-## Deploy na Vercel (GitHub Actions)
+## CI (GitHub Actions)
 
-O CI/CD em `.github/workflows/ci-cd.yml` roda os testes, faz o build do React e publica o **frontend** na Vercel. O backend Express + SQLite não vai para a Vercel (filesystem efêmero e módulo nativo `better-sqlite3`).
-
-- Pull request → deployment de **preview**
-- Push em `main` → deployment de **produção**
-
-A integração Git nativa da Vercel fica desligada em `vercel.json` (`git.deploymentEnabled: false`) para não duplicar o deploy com o Actions.
-
-### 1. Criar o projeto na Vercel
-
-Na pasta do repositório (uma vez, na sua máquina):
-
-```bash
-npm install --global vercel
-vercel login
-vercel link
-```
-
-Confirme o framework Vite, o `installCommand`/`buildCommand` apontando para `frontend/` e o output `frontend/dist`.
-
-No painel da Vercel, em **Settings → Environment Variables**, cadastre pelo menos:
-
-| Variável | Ambiente | Uso |
-| --- | --- | --- |
-| `VITE_API_URL` | Production / Preview | URL pública da API, incluindo `/api` |
-| `VITE_ACCESS_TOKEN` | Production / Preview | Mesmo token do `.env` local |
-
-Sem uma API acessível na internet, o app na Vercel sobe, mas login e produtos não funcionam (o front em `https://…vercel.app` não alcança `localhost`).
-
-### 2. Secrets no GitHub
-
-Em **Settings → Secrets and variables → Actions**, crie:
-
-| Secret | De onde vem |
-| --- | --- |
-| `VERCEL_TOKEN` | [vercel.com/account/tokens](https://vercel.com/account/tokens) |
-| `VERCEL_ORG_ID` | `.vercel/project.json` → `orgId` (depois do `vercel link`) |
-| `VERCEL_PROJECT_ID` | `.vercel/project.json` → `projectId` |
-| `VITE_ACCESS_TOKEN` | token da API (usado no job de qualidade do Actions) |
-
-Opcional: variável de repositório `VITE_API_URL` para o build de testes no GitHub. Em produção o `vercel pull` traz as variáveis do painel da Vercel.
+O workflow em `.github/workflows/ci.yml` instala as dependências e roda `npm test` em todo push na `main` e em pull requests. Não há deploy automático.
