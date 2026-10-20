@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 const criarSessao = require('./config/session');
 const registrarRotas = require('./routes');
 const { notFound, errorHandler } = require('./middlewares/errorHandler');
@@ -27,6 +29,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(criarSessao());
+
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: 'Loja Pet API',
+}));
+app.get('/api/docs.json', (_req, res) => res.json(swaggerSpec));
 
 registrarRotas(app);
 

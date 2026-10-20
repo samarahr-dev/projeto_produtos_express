@@ -1,0 +1,83 @@
+name: CI/CD Vercel
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: vercel-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+jobs:
+  quality:
+    name: Testes e build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Instalar dependências do backend
+        run: npm ci
+
+      - name: Rodar testes
+        run: npm test
+
+      - name: Instalar dependências do frontend
+        run: npm ci --prefix frontend
+
+      - name: Build do frontend
+        run: npm run build --prefix frontend
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN }}
+
+  deploy-preview:
+    name: Preview na Vercel
+    needs: quality
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Puxar ambiente de preview
+        run: vercel pull --yes --environment=preview
+
+      - name: Gerar artefatos
+        run: vercel build
+
+      - name: Publicar preview
+        run: vercel deploy --prebuilt
+
+  deploy-production:
+    name: Produção na Vercel
+    needs: quality
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Puxar ambiente de produção
+        run: vercel pull --yes --environment=production
+
+      - name: Gerar artefatos de produção
+        run: vercel build --prod
+
+      - name: Publicar produção
+        run: vercel deploy --prebuilt --prod

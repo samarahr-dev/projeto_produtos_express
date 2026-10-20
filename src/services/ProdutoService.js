@@ -9,7 +9,7 @@ function listarProdutos(filtroNome) {
 function obterProduto(id) {
   const produto = repository.buscarPorId(id);
   if (!produto) {
-    throw new HttpError(404, 'não encontrado');
+    throw new HttpError(404, 'Produto não encontrado');
   }
   return produto;
 }
