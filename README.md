@@ -158,4 +158,6 @@ A pasta `public/` ainda tem uma página HTML estática antiga da API. A interfac
 
 ## CI (GitHub Actions)
 
-O workflow em `.github/workflows/ci.yml` instala as dependências e roda `npm test` em todo push na `main` e em pull requests. Não há deploy automático.
+O workflow em `.github/workflows/ci.yml` roda em push na `main` e em pull requests: testes do backend, lint e build do frontend. Não há deploy.
+
+Explicação passo a passo (para copiar a ideia em outro projeto): [`.github/workflows/como-funciona-o-ci.md`](.github/workflows/como-funciona-o-ci.md).

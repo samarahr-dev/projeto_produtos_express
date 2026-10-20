@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Testes
+  qualidade:
+    name: Testes, lint e build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,9 +20,21 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
 
-      - name: Instalar dependências
+      - name: Instalar dependências do backend
         run: npm ci
 
       - name: Rodar testes
         run: npm test
+
+      - name: Instalar dependências do frontend
+        run: npm ci --prefix frontend
+
+      - name: Lint do frontend
+        run: npm run lint --prefix frontend
+
+      - name: Build do frontend
+        run: npm run build --prefix frontend
